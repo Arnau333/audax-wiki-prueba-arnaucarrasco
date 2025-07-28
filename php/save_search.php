@@ -10,13 +10,25 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Verificar que el término de búsqueda fue enviado
-if (!isset($_POST['term']) || empty($_POST['term'])) {
+if (!isset($_POST['term'])) {
     http_response_code(400); // Bad Request
     echo json_encode(['status' => 'error', 'message' => 'Término no proporcionado.']);
     exit();
 }
 
-$searchTerm = $_POST['term'];
+// Sanear y validar el término de búsqueda.
+// Nota: El uso de sentencias preparadas con PDO (más abajo) ya es la protección principal y más efectiva contra inyecciones SQL.
+// Estas validaciones adicionales son buenas prácticas para asegurar la calidad de los datos.
+
+// 1. Eliminar espacios en blanco al inicio y al final.
+$searchTerm = trim($_POST['term']);
+
+// 2. Validar que el término no esté vacío después de limpiar y no sea demasiado largo.
+if (empty($searchTerm) || strlen($searchTerm) > 255) { // Ajusta 255 al límite de tu columna en la BD.
+    http_response_code(400); // Bad Request
+    echo json_encode(['status' => 'error', 'message' => 'Término de búsqueda inválido.']);
+    exit();
+}
 
 // Configuración de DSN para PDO
 $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
