@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Servicio Web: Apache + PHP
+  web:
+    image: php:8.2-apache
+    container_name: wikipedia_web_server
+    ports:
+      - "8080:80" # Expone el puerto 80 del contenedor en el puerto 8080 de tu máquina
+    volumes:
+      - ./:/var/www/html/ # Mapea la carpeta actual del proyecto al directorio web de Apache
+    depends_on:
+      - db # Asegura que el servicio 'db' se inicie antes que el 'web'
+    # Comando para instalar la extensión pdo_mysql (necesaria para conectar PHP con MySQL) y luego iniciar Apache
+    command: >
+      sh -c "docker-php-ext-install pdo_mysql && apache2-foreground"
+
+  # Servicio de Base de Datos: MySQL
+  db:
+    image: mysql:8.0
+    container_name: wikipedia_database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_secret
+      MYSQL_DATABASE: wikipedia_searcher
+      MYSQL_USER: user_wiki
+      MYSQL_PASSWORD: password_wiki
+    volumes:
+      - db_data:/var/lib/mysql # Persiste los datos de la BD en un volumen nombrado
+
+volumes:
+  db_data: # Define el volumen para la persistencia de datos
+
