@@ -46,15 +46,3 @@ Sigue estos pasos para poner en marcha la aplicación:
     ```bash
     docker compose down -v
     ```
-
-## 📂 Estructura de Archivos
-
-```
-.
-├── css/
-│   └── style.css      # Hoja de estilos principal
-├── js/
-│   └── app.js         # Lógica del cliente (peticiones fetch, manipulación del DOM)
-├── index.html         # Página principal con el formulario de búsqueda
-├── history.html       # Página para mostrar el historial de búsqueda
-```
