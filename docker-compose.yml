@@ -11,6 +11,8 @@ services:
       - ./:/var/www/html/ # Mapea la carpeta actual del proyecto al directorio web de Apache
     depends_on:
       - db # Asegura que el servicio 'db' se inicie antes que el 'web'
+    env_file:
+      - .env # Carga las variables de entorno desde el archivo .env
     # Comando para instalar la extensión pdo_mysql (necesaria para conectar PHP con MySQL) y luego iniciar Apache
     command: >
       sh -c "docker-php-ext-install pdo_mysql && apache2-foreground"
@@ -26,8 +28,8 @@ services:
       MYSQL_USER: user_wiki
       MYSQL_PASSWORD: password_wiki
     volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/init.sql # Ejecuta este script SQL al iniciar por primera vez
       - db_data:/var/lib/mysql # Persiste los datos de la BD en un volumen nombrado
 
 volumes:
   db_data: # Define el volumen para la persistencia de datos
-

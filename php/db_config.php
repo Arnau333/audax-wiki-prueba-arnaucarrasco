@@ -1,9 +1,10 @@
 <?php
-// Configuración de la base de datos
-// ! En un proyecto real, esta información debería estar en un archivo separado y no ser parte del código fuente.
-define('DB_HOST', 'db');
-define('DB_NAME', 'wikipedia_searcher');
-define('DB_USER', 'user_wiki');
-define('DB_PASS', 'password_wiki');
+
+// Lee la variable de entorno 'DB_HOST' y la define como la constante 'DB_HOST'
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_NAME', getenv('DB_DATABASE'));
+define('DB_USER', getenv('DB_USERNAME'));
+define('DB_PASS', getenv('DB_PASSWORD'));
 define('DB_CHARSET', 'utf8mb4');
 ?>
+
